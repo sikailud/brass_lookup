@@ -1,0 +1,657 @@
+:root {
+  color-scheme: light;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "PingFang SC",
+    "Heiti SC",
+    "Microsoft YaHei",
+    sans-serif;
+  color: #111;
+  background: #fff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+main {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  padding: 28px 30px 44px;
+}
+h1 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+#pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#pageHeader h1 {
+  flex: 1;
+}
+#headerTools {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  margin: 0 2px 20px 0;
+}
+#queryControls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 14px 0 18px;
+}
+#queryControls label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 550;
+}
+#queryControls .concert-option {
+  display: flex;
+  align-items: center;
+  min-height: 43px;
+  gap: 8px;
+  white-space: nowrap;
+}
+select {
+  width: 100%;
+  min-width: 0;
+  height: 43px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 4px;
+  background: #f1f1f1;
+  color: #111;
+  font: inherit;
+  font-size: 15px;
+}
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #111;
+}
+select:focus-visible,
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+h2 {
+  margin: 22px 0 0;
+  font-size: 19px;
+  font-weight: 650;
+}
+#pitchMeta {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+#pitchHint {
+  flex: 1;
+  margin: 2px 0 12px;
+  color: #555;
+  font-size: 13px;
+}
+#pitchTools {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+}
+#soundSettings {
+  position: relative;
+  flex: 0 0 auto;
+}
+#soundSettingsToggle {
+  min-height: 27px;
+  margin-top: -4px;
+  padding: 3px 7px;
+  border: 0;
+  border-radius: 4px;
+  background: #f3f3f3;
+  color: #666;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+#micToggle {
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  place-items: center;
+  flex: 0 0 23px;
+  width: 23px;
+  height: 23px;
+  min-height: 23px;
+  margin-top: -4px;
+  padding: 0;
+  border: 1.5px solid #aaa;
+  border-radius: 50%;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  cursor: pointer;
+}
+#micToggle::before {
+  content: "";
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #999;
+  transition:
+    width 120ms ease,
+    height 120ms ease,
+    background-color 120ms ease;
+}
+#micToggle.active {
+  border-color: #c93636;
+  background: transparent;
+  color: transparent;
+}
+#micToggle.active::before {
+  width: 11px;
+  height: 11px;
+  background: #c93636;
+}
+#micToggle:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+#micStatus {
+  position: absolute;
+  z-index: 13;
+  top: calc(100% + 4px);
+  right: 0;
+  max-width: min(280px, calc(100vw - 32px));
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #fff;
+  color: #a22;
+  font-size: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+}
+#micStatus[hidden] {
+  display: none;
+}
+#soundSettingsPanel {
+  position: absolute;
+  z-index: 12;
+  top: calc(100% + 5px);
+  right: 0;
+  display: grid;
+  gap: 10px;
+  width: 190px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.14);
+}
+#soundSettingsPanel[hidden] {
+  display: none;
+}
+#soundSettingsPanel label {
+  display: grid;
+  gap: 4px;
+  color: #555;
+  font-size: 12px;
+  font-weight: 550;
+}
+#soundSettingsPanel select {
+  height: 36px;
+  padding: 0 8px;
+  font-size: 14px;
+}
+#scorePaper {
+  width: 100%;
+  overflow: hidden;
+}
+#scorePaper svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+#scorePaper .abcjs-note {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#scorePaper .note-marker-highlight {
+  fill: #ffdf4d;
+  opacity: 0.78;
+}
+#scorePaper .note-marker-highlight.mic-selected {
+  fill: #df4444;
+  opacity: 0.42;
+}
+#scorePaper .abcjs-note.note-selected {
+  filter: drop-shadow(0 0 1px #c49a00);
+}
+#scorePaper .abcjs-note.note-selected.mic-selected {
+  filter: drop-shadow(0 0 2px rgba(190, 35, 35, 0.65));
+}
+#scorePaper .abcjs-note:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 2px #c49a00);
+}
+#scaleNoteList {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 10px 2px 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+.scale-note {
+  --note-card-color: #f6f6f6;
+  display: flex;
+  flex: 0 0 72px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 78px;
+  padding: 8px 5px;
+  border: 0;
+  border-radius: 4px;
+  background: #f6f6f6;
+  color: #111;
+  font: inherit;
+  cursor: pointer;
+  scroll-snap-align: center;
+}
+.scale-note.selected {
+  flex-basis: 174px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 10px 11px;
+  background: #ededed;
+  transform: scale(1.025);
+  animation: note-card-select 180ms ease-out;
+}
+.scale-note.selected:not(.mic-selected) {
+  --note-card-color: #fff0a8;
+  background: #fff0a8;
+}
+.scale-note.selected.mic-selected {
+  --note-card-color: #f8eded;
+  background: #f8eded;
+}
+@keyframes note-card-select {
+  from {
+    opacity: 0.75;
+    transform: translateY(3px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1.025);
+  }
+}
+.scale-note:focus-visible {
+  outline: 2px solid #333;
+  outline-offset: 2px;
+}
+.scale-note-name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.scale-note.selected .scale-note-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+.scale-note-degree,
+.scale-note-detail,
+.scale-note-concert {
+  color: #555;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.scale-note.selected .valves {
+  gap: 6px;
+}
+.scale-note.selected .valve {
+  width: 27px;
+  height: 27px;
+}
+.card-tuner {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  color: #888;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.card-tuner-track {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: #ccc;
+}
+.card-tuner-track::after {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 1px;
+  height: 9px;
+  background: #999;
+  content: "";
+}
+.card-tuner-needle {
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 50%;
+  width: 2px;
+  height: 11px;
+  background: #999;
+  transform: translateX(-50%);
+  transition:
+    left 70ms linear,
+    background-color 100ms ease;
+}
+.card-tuner-cents {
+  min-width: 34px;
+  color: #999;
+  text-align: right;
+  font-size: 11px;
+}
+.mini-valves {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.mini-valve {
+  display: inline-grid;
+  width: 13px;
+  height: 13px;
+  place-items: center;
+  border: 1px solid #777;
+  border-radius: 50%;
+  background: inherit;
+  color: #555;
+  font-size: 7px;
+  font-weight: 600;
+  line-height: 1;
+}
+.mini-valve.pressed {
+  background: #555;
+  color: var(--note-card-color);
+}
+.mini-position {
+  color: #444;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+.fingering-unavailable {
+  color: #666;
+  font-size: 12px;
+}
+#pageFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+#languageOptions {
+  position: fixed;
+  z-index: 20;
+  right: 18px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  white-space: nowrap;
+}
+#languageOptions button {
+  min-height: 30px;
+  padding: 4px 3px;
+  border: 0;
+  background: transparent;
+  color: #999;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+#languageOptions #languageToggle {
+  min-height: 28px;
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #777;
+  font-size: 11px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+}
+#languageOptions #languageToggle::after {
+  content: "⌃";
+  display: inline-block;
+  margin-left: 6px;
+  color: #999;
+  transition: transform 160ms ease;
+}
+#languageOptions #languageToggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+#languageChoices {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 7px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: max-content;
+  max-width: min(calc(100vw - 24px), 360px);
+  max-height: min(42vh, 280px);
+  overflow-y: auto;
+  padding: 5px 8px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.13);
+  transform: scale(0.94);
+  transform-origin: right bottom;
+  opacity: 0;
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+#languageChoices[hidden] {
+  display: none;
+}
+#languageChoices.open {
+  transform: scale(1);
+  opacity: 1;
+}
+#languageChoices button + button::before {
+  content: "·";
+  margin-right: 7px;
+  color: #bbb;
+}
+#languageOptions button.active {
+  color: #666;
+}
+#languageOptions button:focus-visible {
+  outline: 2px solid #888;
+  outline-offset: 2px;
+}
+.valves {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.valve {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1.5px solid #555;
+  border-radius: 50%;
+  color: #111;
+  background: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+.valve.pressed {
+  color: var(--note-card-color);
+  background: #111;
+}
+.positions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.position {
+  display: inline-grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid #555;
+  border-radius: 50%;
+  background: inherit;
+  font-size: 12px;
+}
+.position.pressed {
+  color: var(--note-card-color);
+  background: #111;
+}
+@media (max-width: 600px) {
+  main {
+    padding: 19px 16px calc(26px + env(safe-area-inset-bottom));
+  }
+  h1 {
+    margin-bottom: 15px;
+    font-size: 22px;
+  }
+  #headerTools {
+    margin: 0 1px 15px 0;
+  }
+  #queryControls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 12px 0 14px;
+  }
+  #queryControls .concert-option {
+    min-height: 44px;
+  }
+  select {
+    height: 45px;
+  }
+  h2 {
+    margin-top: 17px;
+    font-size: 18px;
+  }
+  #pitchHint {
+    font-size: 12px;
+  }
+  #scaleNoteList {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 9px 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .scale-note {
+    width: 100%;
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    min-height: 42px;
+    padding: 7px 10px;
+  }
+  .scale-note.selected {
+    flex-basis: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    min-height: 60px;
+    padding: 9px 10px;
+    transform: scale(1.01);
+    animation-name: note-card-select-mobile;
+  }
+  @keyframes note-card-select-mobile {
+    from {
+      opacity: 0.75;
+      transform: translateY(3px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1.01);
+    }
+  }
+  .card-tuner {
+    flex: 0 0 100%;
+    margin: 2px 0 0;
+  }
+  .scale-note.selected .valve {
+    width: 26px;
+    height: 26px;
+  }
+  .scale-note.selected .positions {
+    flex-wrap: wrap;
+  }
+  #pageFooter {
+    margin-top: 12px;
+  }
+  #languageOptions {
+    right: 12px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+  #languageChoices {
+    max-width: calc(100vw - 24px);
+  }
+}
+@media (max-width: 360px) {
+  main {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+  #queryControls {
+    gap: 8px;
+  }
+  select {
+    padding-right: 4px;
+    padding-left: 7px;
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #languageChoices,
+  .scale-note {
+    transition: none;
+  }
+  .scale-note.selected {
+    animation: none;
+  }
+}

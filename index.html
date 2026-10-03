@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>铜管乐器指法</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header id="pageHeader">
+        <h1 id="appTitle">铜管乐器指法</h1>
+        <div id="headerTools">
+          <button type="button" id="micToggle" aria-pressed="false"></button>
+          <span id="micStatus" role="status" hidden></span>
+        </div>
+      </header>
+      <section id="queryControls" aria-label="查询设置">
+        <label
+          ><span data-i18n="instrumentLabel">乐器</span>
+          <select id="instrumentSelect" aria-label="选择乐器">
+            <optgroup id="brassGroup" label="铜管乐器">
+              <option value="trumpet" data-instrument="trumpet">小号（降B调）</option>
+              <option value="horn" data-instrument="horn">圆号（F调）</option>
+              <option value="trombone" data-instrument="trombone">长号</option>
+              <option value="euphonium" data-instrument="euphonium">上低音号（C调）</option>
+              <option value="euphoniumBb" data-instrument="euphoniumBb">上低音号（降B调）</option>
+              <option value="tuba" data-instrument="tuba">大号（C调）</option>
+            </optgroup>
+          </select>
+        </label>
+        <label
+          ><span data-i18n="keyLabel">调（实际音高）</span>
+          <select id="keySelect" aria-label="选择实际调"></select>
+        </label>
+        <label
+          ><span data-i18n="scaleLabel">音阶</span>
+          <select id="scaleSelect" aria-label="选择音阶">
+            <option value="major" data-scale="major">大调</option>
+            <option value="naturalMinor" data-scale="naturalMinor">自然小调</option>
+            <option value="harmonicMinor" data-scale="harmonicMinor">和声小调</option>
+            <option value="majorPentatonic" data-scale="majorPentatonic">大调五声音阶</option>
+            <option value="minorPentatonic" data-scale="minorPentatonic">小调五声音阶</option>
+            <option value="chromatic" data-scale="chromatic">半音阶</option>
+            <optgroup id="modesGroup" label="调式">
+              <option value="ionian" data-scale="ionian">伊奥尼亚调式</option>
+              <option value="dorian" data-scale="dorian">多利亚调式</option>
+              <option value="phrygian" data-scale="phrygian">弗里吉亚调式</option>
+              <option value="lydian" data-scale="lydian">利底亚调式</option>
+              <option value="mixolydian" data-scale="mixolydian">混合利底亚调式</option>
+              <option value="aeolian" data-scale="aeolian">伊奥利亚调式</option>
+              <option value="locrian" data-scale="locrian">洛克里亚调式</option>
+            </optgroup>
+            <optgroup id="traditionalModesGroup" label="世界传统调式">
+              <option value="ryukyu" data-scale="ryukyu">琉球音阶（Ryūkyū）</option>
+              <option value="hirajoshi" data-scale="hirajoshi">平调子（Hirajoshi）</option>
+              <option value="kumoi" data-scale="kumoi">雲井（Kumoi）</option>
+              <option value="slendro" data-scale="slendro">斯连德罗（Slendro，近似）</option>
+              <option value="hijaz" data-scale="hijaz">希贾兹（Hijaz，十二平均律近似）</option>
+              <option value="bhairav" data-scale="bhairav">
+                拜拉夫（Bhairav，十二平均律近似）
+              </option>
+            </optgroup>
+            <optgroup id="arpeggiosGroup" label="琶音">
+              <option value="majorArpeggio" data-scale="majorArpeggio">大三和弦琶音</option>
+              <option value="minorArpeggio" data-scale="minorArpeggio">小三和弦琶音</option>
+              <option value="diminishedArpeggio" data-scale="diminishedArpeggio">
+                减三和弦琶音
+              </option>
+              <option value="augmentedArpeggio" data-scale="augmentedArpeggio">增三和弦琶音</option>
+              <option value="dominant7Arpeggio" data-scale="dominant7Arpeggio">属七和弦琶音</option>
+              <option value="minor7Arpeggio" data-scale="minor7Arpeggio">小七和弦琶音</option>
+              <option value="major7Arpeggio" data-scale="major7Arpeggio">大七和弦琶音</option>
+            </optgroup>
+          </select>
+        </label>
+        <label
+          ><span data-i18n="octaveLabel">实际音高八度</span>
+          <select id="octaveSelect" aria-label="选择实际音高八度">
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+        <label class="concert-option"
+          ><input id="concertToggle" type="checkbox" /><span data-i18n="concertToggle"
+            >显示实际音高</span
+          ></label
+        >
+      </section>
+
+      <h2 id="resultTitle">C 大调 · Tpt. in B♭</h2>
+      <div id="pitchMeta">
+        <p id="pitchHint">谱面调：D · 高音谱表 · 点击音符查看活塞指法</p>
+        <div id="pitchTools">
+          <div id="soundSettings">
+            <button
+              type="button"
+              id="soundSettingsToggle"
+              aria-expanded="false"
+              aria-controls="soundSettingsPanel"
+              data-i18n="soundSettingsLabel"
+            >
+              声音
+            </button>
+            <div id="soundSettingsPanel" hidden>
+              <label
+                ><span id="soundLengthLabel" data-i18n="soundLengthLabel">音长</span>
+                <select id="soundLengthSelect">
+                  <option value="0.4" data-sound-option="short">短</option>
+                  <option value="0.85" data-sound-option="medium" selected>中</option>
+                  <option value="1.3" data-sound-option="long">长</option>
+                </select>
+              </label>
+              <label
+                ><span id="soundTimbreLabel" data-i18n="soundTimbreLabel">音色</span>
+                <select id="soundTimbreSelect">
+                  <option value="soft" data-sound-option="soft">柔和</option>
+                  <option value="warm" data-sound-option="warm" selected>温暖</option>
+                  <option value="bright" data-sound-option="bright">明亮</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="scorePaper" aria-label="音阶乐谱"></div>
+      <div id="scaleNoteList" aria-label="音阶内的音符与指法"></div>
+      <footer id="pageFooter">
+        <nav id="languageOptions" aria-label="选择语言">
+          <button
+            type="button"
+            id="languageToggle"
+            aria-expanded="false"
+            aria-controls="languageChoices"
+          >
+            中文 · English · 日本語 · Español · Français · Deutsch · Italiano · Português · 한국어
+          </button>
+          <div id="languageChoices" hidden>
+            <button type="button" data-language="zh" aria-pressed="true">中文</button>
+            <button type="button" data-language="en" aria-pressed="false">English</button>
+            <button type="button" data-language="ja" aria-pressed="false">日本語</button>
+            <button type="button" data-language="es" aria-pressed="false">Español</button>
+            <button type="button" data-language="fr" aria-pressed="false">Français</button>
+            <button type="button" data-language="de" aria-pressed="false">Deutsch</button>
+            <button type="button" data-language="it" aria-pressed="false">Italiano</button>
+            <button type="button" data-language="pt" aria-pressed="false">Português</button>
+            <button type="button" data-language="ko" aria-pressed="false">한국어</button>
+          </div>
+        </nav>
+      </footer>
+    </main>
+    <script src="vendor/abcjs-basic-min.js"></script>
+    <script src="i18n.js"></script>
+    <script src="fingering-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
