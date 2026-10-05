@@ -21,6 +21,7 @@
           <select id="instrumentSelect" aria-label="选择乐器">
             <optgroup id="brassGroup" label="铜管乐器">
               <option value="trumpet" data-instrument="trumpet">小号（降B调）</option>
+              <option value="flugelhorn" data-instrument="flugelhorn">柔音号（降B调）</option>
               <option value="horn" data-instrument="horn">圆号（F调）</option>
               <option value="trombone" data-instrument="trombone">长号</option>
               <option value="euphonium" data-instrument="euphonium">上低音号（C调）</option>
@@ -51,10 +52,21 @@
               <option value="aeolian" data-scale="aeolian">伊奥利亚调式</option>
               <option value="locrian" data-scale="locrian">洛克里亚调式</option>
             </optgroup>
+            <optgroup id="jazzModesGroup" label="爵士与合成音阶">
+              <option value="bebopDominant" data-scale="bebopDominant">属和弦 Bebop 音阶</option>
+              <option value="altered" data-scale="altered">变化音阶（Altered）</option>
+              <option value="lydianDominant" data-scale="lydianDominant">利底亚属音阶</option>
+              <option value="wholeTone" data-scale="wholeTone">全音音阶</option>
+              <option value="diminishedHalfWhole" data-scale="diminishedHalfWhole">半全减音阶</option>
+            </optgroup>
             <optgroup id="traditionalModesGroup" label="世界传统调式">
               <option value="ryukyu" data-scale="ryukyu">琉球音阶（Ryūkyū）</option>
               <option value="hirajoshi" data-scale="hirajoshi">平调子（Hirajoshi）</option>
+              <option value="insen" data-scale="insen">阴线音阶（In Sen，十二平均律近似）</option>
+              <option value="iwato" data-scale="iwato">岩户音阶（Iwato，十二平均律近似）</option>
               <option value="kumoi" data-scale="kumoi">雲井（Kumoi）</option>
+              <option value="hungarianMinor" data-scale="hungarianMinor">匈牙利小调</option>
+              <option value="persian" data-scale="persian">波斯音阶</option>
               <option value="slendro" data-scale="slendro">斯连德罗（Slendro，近似）</option>
               <option value="hijaz" data-scale="hijaz">希贾兹（Hijaz，十二平均律近似）</option>
               <option value="bhairav" data-scale="bhairav">
@@ -72,14 +84,6 @@
               <option value="minor7Arpeggio" data-scale="minor7Arpeggio">小七和弦琶音</option>
               <option value="major7Arpeggio" data-scale="major7Arpeggio">大七和弦琶音</option>
             </optgroup>
-          </select>
-        </label>
-        <label
-          ><span data-i18n="octaveLabel">实际音高八度</span>
-          <select id="octaveSelect" aria-label="选择实际音高八度">
-            <option value="3">3</option>
-            <option value="4" selected>4</option>
-            <option value="5">5</option>
           </select>
         </label>
         <label class="concert-option"

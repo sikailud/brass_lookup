@@ -11,6 +11,10 @@ const FINGERING_DATA = {
       range: [54, 84],
       pitchClass: [0, 7, 5, 6, 3, 1, 2, 0, 6, 3, 1, 2],
     },
+    flugelhorn: {
+      range: [54, 84],
+      pitchClass: [0, 7, 5, 6, 3, 1, 2, 0, 6, 3, 1, 2],
+    },
     // Written-pitch chart for a double horn. 4th valve selects the B♭ side.
     horn: {
       range: [48, 84],

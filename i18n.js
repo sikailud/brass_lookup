@@ -29,6 +29,7 @@ const UI_TEXT = {
     octaveAria: "选择实际音高八度",
     languageAria: "选择语言",
     modesGroup: "调式",
+    jazzModesGroup: "爵士与合成音阶",
     traditionalModesGroup: "世界传统调式",
     arpeggiosGroup: "琶音",
     writtenKey: "谱面调",
@@ -58,6 +59,11 @@ const UI_TEXT = {
       majorPentatonic: "大调五声音阶",
       minorPentatonic: "小调五声音阶",
       chromatic: "半音阶",
+      bebopDominant: "属和弦 Bebop 音阶",
+      altered: "变化音阶（Altered）",
+      lydianDominant: "利底亚属音阶",
+      wholeTone: "全音音阶",
+      diminishedHalfWhole: "半全减音阶",
       ionian: "伊奥尼亚调式",
       dorian: "多利亚调式",
       phrygian: "弗里吉亚调式",
@@ -67,7 +73,11 @@ const UI_TEXT = {
       locrian: "洛克里亚调式",
       ryukyu: "琉球音阶（Ryūkyū）",
       hirajoshi: "平调子（Hirajoshi，十二平均律近似）",
+      insen: "阴旋音阶（In Sen，十二平均律近似）",
+      iwato: "岩户音阶（Iwato，十二平均律近似）",
       kumoi: "雲井（Kumoi，十二平均律近似）",
+      hungarianMinor: "匈牙利小调",
+      persian: "波斯音阶",
       slendro: "斯连德罗（Slendro，等分近似）",
       hijaz: "希贾兹（Hijaz，十二平均律近似）",
       bhairav: "拜拉夫（Bhairav，十二平均律近似）",
@@ -110,6 +120,7 @@ const UI_TEXT = {
     octaveAria: "Select concert octave",
     languageAria: "Select language",
     modesGroup: "Modes",
+    jazzModesGroup: "Jazz & synthetic scales",
     traditionalModesGroup: "World traditions",
     arpeggiosGroup: "Arpeggios",
     writtenKey: "Written key",
@@ -139,6 +150,11 @@ const UI_TEXT = {
       majorPentatonic: "Major pentatonic",
       minorPentatonic: "Minor pentatonic",
       chromatic: "Chromatic",
+      bebopDominant: "Bebop dominant",
+      altered: "Altered scale",
+      lydianDominant: "Lydian dominant",
+      wholeTone: "Whole tone",
+      diminishedHalfWhole: "Diminished (half–whole)",
       ionian: "Ionian",
       dorian: "Dorian",
       phrygian: "Phrygian",
@@ -148,7 +164,11 @@ const UI_TEXT = {
       locrian: "Locrian",
       ryukyu: "Ryukyu scale",
       hirajoshi: "Hirajoshi (12-TET approximation)",
+      insen: "In Sen (12-TET approximation)",
+      iwato: "Iwato (12-TET approximation)",
       kumoi: "Kumoi (12-TET approximation)",
+      hungarianMinor: "Hungarian minor",
+      persian: "Persian scale",
       slendro: "Slendro (equal-tempered approximation)",
       hijaz: "Maqam Hijaz (12-TET approximation)",
       bhairav: "Raga Bhairav (12-TET approximation)",
@@ -191,6 +211,7 @@ const UI_TEXT = {
     octaveAria: "実音のオクターブを選択",
     languageAria: "言語を選択",
     modesGroup: "旋法",
+    jazzModesGroup: "ジャズ・人工音階",
     traditionalModesGroup: "世界の伝統音階",
     arpeggiosGroup: "アルペジオ",
     writtenKey: "記譜上の調",
@@ -220,6 +241,11 @@ const UI_TEXT = {
       majorPentatonic: "メジャー・ペンタトニック",
       minorPentatonic: "マイナー・ペンタトニック",
       chromatic: "半音階",
+      bebopDominant: "ビバップ・ドミナント",
+      altered: "オルタード・スケール",
+      lydianDominant: "リディアン・ドミナント",
+      wholeTone: "全音音階",
+      diminishedHalfWhole: "ディミニッシュ（半音・全音）",
       ionian: "イオニア旋法",
       dorian: "ドリア旋法",
       phrygian: "フリギア旋法",
@@ -229,7 +255,11 @@ const UI_TEXT = {
       locrian: "ロクリア旋法",
       ryukyu: "琉球音階",
       hirajoshi: "平調子（12平均律近似）",
+      insen: "陰旋音階（In Sen、12平均律近似）",
+      iwato: "岩戸音階（Iwato、12平均律近似）",
       kumoi: "雲井（12平均律近似）",
+      hungarianMinor: "ハンガリー短音階",
+      persian: "ペルシア音階",
       slendro: "スレンドロ（平均律近似）",
       hijaz: "マカーム・ヒジャーズ（12平均律近似）",
       bhairav: "ラーガ・バイラヴ（12平均律近似）",
@@ -415,6 +445,45 @@ Object.assign(extraScaleNames.de, { ryukyu: "Ryūkyū-Tonleiter" });
 Object.assign(extraScaleNames.it, { ryukyu: "Scala ryūkyū" });
 Object.assign(extraScaleNames.pt, { ryukyu: "Escala ryūkyū" });
 Object.assign(extraScaleNames.ko, { ryukyu: "류큐 음계" });
+const addedScaleNames = {
+  es: {
+    bebopDominant: "Bebop dominante", altered: "Escala alterada", lydianDominant: "Lidio dominante",
+    wholeTone: "Tonos enteros", diminishedHalfWhole: "Disminuida semitono-tono",
+    insen: "In Sen (aprox. temperada)", iwato: "Iwato (aprox. temperada)",
+    hungarianMinor: "Menor húngara", persian: "Escala persa",
+  },
+  fr: {
+    bebopDominant: "Bebop dominant", altered: "Gamme altérée", lydianDominant: "Lydien dominant",
+    wholeTone: "Tons entiers", diminishedHalfWhole: "Diminuée demi-ton-ton",
+    insen: "In Sen (approx. tempérée)", iwato: "Iwato (approx. tempérée)",
+    hungarianMinor: "Mineur hongrois", persian: "Gamme persane",
+  },
+  de: {
+    bebopDominant: "Bebop-Dominant", altered: "Alterierte Tonleiter", lydianDominant: "Lydisch-Dominant",
+    wholeTone: "Ganztonleiter", diminishedHalfWhole: "Halbton-Ganzton vermindert",
+    insen: "In Sen (Temperierungsnäherung)", iwato: "Iwato (Temperierungsnäherung)",
+    hungarianMinor: "Ungarisch Moll", persian: "Persische Tonleiter",
+  },
+  it: {
+    bebopDominant: "Bebop dominante", altered: "Scala alterata", lydianDominant: "Lidio dominante",
+    wholeTone: "Toni interi", diminishedHalfWhole: "Diminuita semitono-tono",
+    insen: "In Sen (approssimazione temperata)", iwato: "Iwato (approssimazione temperata)",
+    hungarianMinor: "Minore ungherese", persian: "Scala persiana",
+  },
+  pt: {
+    bebopDominant: "Bebop dominante", altered: "Escala alterada", lydianDominant: "Lídio dominante",
+    wholeTone: "Tons inteiros", diminishedHalfWhole: "Diminuta semitom-tom",
+    insen: "In Sen (aprox. temperada)", iwato: "Iwato (aprox. temperada)",
+    hungarianMinor: "Menor húngara", persian: "Escala persa",
+  },
+  ko: {
+    bebopDominant: "비밥 도미넌트", altered: "얼터드 스케일", lydianDominant: "리디안 도미넌트",
+    wholeTone: "온음음계", diminishedHalfWhole: "반음-온음 디미니시드",
+    insen: "인센 (평균율 근사)", iwato: "이와토 (평균율 근사)",
+    hungarianMinor: "헝가리 단음계", persian: "페르시아 음계",
+  },
+};
+Object.entries(addedScaleNames).forEach(([code, names]) => Object.assign(extraScaleNames[code], names));
 const extraUi = {
   es: {
     appTitle: "Digitación de metales",
@@ -536,6 +605,7 @@ Object.entries(extraUi).forEach(([code, labels]) => {
 const INSTRUMENT_OPTIONS = {
   zh: {
     trumpet: "小号",
+    flugelhorn: "柔音号",
     horn: "圆号",
     trombone: "长号",
     euphonium: "上低音号",
@@ -544,6 +614,7 @@ const INSTRUMENT_OPTIONS = {
   },
   en: {
     trumpet: "Trumpet",
+    flugelhorn: "Flugelhorn",
     horn: "Horn",
     trombone: "Trombone",
     euphonium: "Euphonium",
@@ -552,6 +623,7 @@ const INSTRUMENT_OPTIONS = {
   },
   ja: {
     trumpet: "トランペット",
+    flugelhorn: "フリューゲルホルン",
     horn: "ホルン",
     trombone: "トロンボーン",
     euphonium: "ユーフォニアム",
@@ -560,6 +632,7 @@ const INSTRUMENT_OPTIONS = {
   },
   es: {
     trumpet: "Trompeta",
+    flugelhorn: "Fliscorno",
     horn: "Trompa",
     trombone: "Trombón",
     euphonium: "Bombardino",
@@ -568,6 +641,7 @@ const INSTRUMENT_OPTIONS = {
   },
   fr: {
     trumpet: "Trompette",
+    flugelhorn: "Bugle",
     horn: "Cor",
     trombone: "Trombone",
     euphonium: "Euphonium",
@@ -576,6 +650,7 @@ const INSTRUMENT_OPTIONS = {
   },
   de: {
     trumpet: "Trompete",
+    flugelhorn: "Flügelhorn",
     horn: "Horn",
     trombone: "Posaune",
     euphonium: "Euphonium",
@@ -584,6 +659,7 @@ const INSTRUMENT_OPTIONS = {
   },
   it: {
     trumpet: "Tromba",
+    flugelhorn: "Flicorno",
     horn: "Corno",
     trombone: "Trombone",
     euphonium: "Eufonio",
@@ -592,6 +668,7 @@ const INSTRUMENT_OPTIONS = {
   },
   pt: {
     trumpet: "Trompete",
+    flugelhorn: "Flügelhorn",
     horn: "Trompa",
     trombone: "Trombone",
     euphonium: "Eufónio",
@@ -600,6 +677,7 @@ const INSTRUMENT_OPTIONS = {
   },
   ko: {
     trumpet: "트럼펫",
+    flugelhorn: "플뤼겔호른",
     horn: "호른",
     trombone: "트롬본",
     euphonium: "유포니움",
@@ -609,6 +687,7 @@ const INSTRUMENT_OPTIONS = {
 };
 const INSTRUMENT_ABBREVIATIONS = {
   trumpet: "Tpt. B♭",
+  flugelhorn: "Flgh. B♭",
   horn: "Hn. F",
   trombone: "Tbn.",
   euphonium: "Euph. C",

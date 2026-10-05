@@ -56,6 +56,36 @@ const scales = {
     degrees: Array.from({ length: 13 }, (_, i) => String(i + 1)),
     spelling: null,
   },
+  bebopDominant: {
+    label: "Bebop dominant",
+    steps: [0, 2, 4, 5, 7, 9, 10, 11, 12],
+    degrees: ["1", "2", "3", "4", "5", "6", "♭7", "7", "8"],
+    spelling: [0, 1, 2, 3, 4, 5, 6, 6, 7],
+  },
+  altered: {
+    label: "Altered scale",
+    steps: [0, 1, 3, 4, 6, 8, 10, 12],
+    degrees: ["1", "♭9", "♯9", "3", "♭5", "♯5", "♭7", "8"],
+    spelling: [0, 1, 1, 2, 4, 4, 6, 7],
+  },
+  lydianDominant: {
+    label: "Lydian dominant",
+    steps: [0, 2, 4, 6, 7, 9, 10, 12],
+    degrees: ["1", "2", "3", "♯4", "5", "6", "♭7", "8"],
+    spelling: [0, 1, 2, 3, 4, 5, 6, 7],
+  },
+  wholeTone: {
+    label: "Whole tone",
+    steps: [0, 2, 4, 6, 8, 10, 12],
+    degrees: ["1", "2", "3", "♯4", "♯5", "♭7", "8"],
+    spelling: [0, 1, 2, 3, 4, 6, 7],
+  },
+  diminishedHalfWhole: {
+    label: "Diminished (half–whole)",
+    steps: [0, 1, 3, 4, 6, 7, 9, 10, 12],
+    degrees: ["1", "♭9", "♯9", "3", "♯11", "5", "13", "♭7", "8"],
+    spelling: [0, 1, 1, 2, 3, 4, 5, 6, 7],
+  },
   ionian: {
     label: "Ionian",
     steps: [0, 2, 4, 5, 7, 9, 11, 12],
@@ -116,6 +146,30 @@ const scales = {
     steps: [0, 2, 3, 7, 8, 12],
     degrees: ["1", "2", "♭3", "5", "♭6", "8"],
     spelling: [0, 1, 2, 4, 5, 7],
+  },
+  insen: {
+    label: "In Sen (12-TET approximation)",
+    steps: [0, 1, 5, 7, 10, 12],
+    degrees: ["1", "♭2", "4", "5", "♭7", "8"],
+    spelling: [0, 1, 3, 4, 6, 7],
+  },
+  iwato: {
+    label: "Iwato (12-TET approximation)",
+    steps: [0, 1, 5, 6, 10, 12],
+    degrees: ["1", "♭2", "4", "♭5", "♭7", "8"],
+    spelling: [0, 1, 3, 4, 6, 7],
+  },
+  hungarianMinor: {
+    label: "Hungarian minor",
+    steps: [0, 2, 3, 6, 7, 8, 11, 12],
+    degrees: ["1", "2", "♭3", "♯4", "5", "♭6", "7", "8"],
+    spelling: [0, 1, 2, 3, 4, 5, 6, 7],
+  },
+  persian: {
+    label: "Persian scale",
+    steps: [0, 1, 4, 5, 6, 8, 11, 12],
+    degrees: ["1", "♭2", "3", "4", "♭5", "♭6", "7", "8"],
+    spelling: [0, 1, 2, 3, 4, 5, 6, 7],
   },
   kumoi: {
     label: "Kumoi (12-TET approximation)",
@@ -193,6 +247,13 @@ const instruments = {
     valves: 3,
     clef: "treble",
   },
+  flugelhorn: {
+    label: "Flugelhorn in B♭",
+    writtenOffset: 2,
+    concertOffset: -2,
+    valves: 3,
+    clef: "treble",
+  },
   horn: {
     label: "Hn. in F",
     writtenOffset: 7,
@@ -247,6 +308,8 @@ function applyLanguage() {
   document.querySelector("#queryControls").setAttribute("aria-label", strings.controlsAria);
   document.querySelector("#brassGroup").label = strings.brassGroup;
   document.querySelector("#modesGroup").label = strings.modesGroup;
+  document.querySelector("#jazzModesGroup").label =
+    strings.jazzModesGroup || "Jazz & synthetic scales";
   document.querySelector("#traditionalModesGroup").label =
     strings.traditionalModesGroup || "World traditions";
   document.querySelector("#arpeggiosGroup").label = strings.arpeggiosGroup;
@@ -274,7 +337,6 @@ function applyLanguage() {
   document.querySelector("#instrumentSelect").setAttribute("aria-label", strings.instrumentAria);
   document.querySelector("#keySelect").setAttribute("aria-label", strings.keyAria);
   document.querySelector("#scaleSelect").setAttribute("aria-label", strings.scaleAria);
-  document.querySelector("#octaveSelect").setAttribute("aria-label", strings.octaveAria);
   document.querySelector("#languageOptions").setAttribute("aria-label", strings.languageAria);
   const activeLanguageButton = document.querySelector(`[data-language="${currentLanguage}"]`);
   document.querySelector("#languageToggle").textContent =
@@ -687,11 +749,18 @@ function abcTokenFor(name, signature) {
 function makeAbc(notes, key, scaleId, clef = "treble") {
   const signature = signatureFor(key, scaleId),
     abcKey = abcKeyName(signature.keyName);
-  const tokens = notes.map((note) => note.abcToken);
-  const bars =
-    tokens.map((token, index) => `${index > 0 && index % 4 === 0 ? "| " : ""}${token}`).join(" ") +
-    " |";
-  return `X:1\nL:1/4\nM:4/4\nK:${abcKey} clef=${clef}\n${bars}`;
+  const octaveLines = [];
+  for (let index = 0; index < notes.length; ) {
+    const octave = notes[index].octave;
+    const tokens = [];
+    while (index < notes.length && notes[index].octave === octave) {
+      if (tokens.length && tokens.length % 4 === 0) tokens.push("|");
+      tokens.push(notes[index++].abcToken);
+    }
+    tokens.push("|");
+    octaveLines.push(tokens.join(" "));
+  }
+  return `X:1\nL:1/4\nM:4/4\nK:${abcKey} clef=${clef}\n${octaveLines.join("\n")}`;
 }
 
 function fingeringInfo(note, instrumentId, instrument) {
@@ -940,9 +1009,9 @@ function render() {
     writtenKey = transposeKey(key, instrument.writtenOffset),
     scaleId = document.querySelector("#scaleSelect").value,
     scale = scales[scaleId];
-  const octave = +document.querySelector("#octaveSelect").value,
-    showConcert = document.querySelector("#concertToggle").checked;
-  const concertRootMidi = key.pc + (octave + 1) * 12,
+  const showConcert = document.querySelector("#concertToggle").checked;
+  const firstOctave = 4;
+  const concertRootMidi = key.pc + (firstOctave + 1) * 12,
     rootMidi = concertRootMidi + instrument.writtenOffset;
   const scaleTitle = UI_TEXT[currentLanguage].scales[scaleId];
   const keyScaleTitle =
@@ -952,17 +1021,20 @@ function render() {
   const clefName = instrument.clef === "bass" ? t("bassClef") : t("trebleClef");
   document.querySelector("#pitchHint").textContent =
     `${t("writtenKey")}: ${writtenKey.name} · ${clefName}${showConcert ? ` · ${t("concertShown")}` : ""} · ${fingeringHint}`;
-  currentNotes = scale.steps.map((step, index) => {
-    const midi = rootMidi + step;
-    const spelling = noteForScale(writtenKey, rootMidi, midi, scaleId, index);
-    return {
-      midi,
-      name: spelling.name,
-      abcToken: spelling.abcToken,
-      concert: concertName(midi, instrument, key),
-      degree: scale.degrees[index],
-    };
-  });
+  currentNotes = Array.from({ length: 3 }, (_, octaveIndex) =>
+    (octaveIndex < 2 ? scale.steps.slice(0, -1) : scale.steps).map((step, index) => {
+      const midi = rootMidi + octaveIndex * 12 + step;
+      const spelling = noteForScale(writtenKey, rootMidi, midi, scaleId, index);
+      return {
+        midi,
+        name: spelling.name,
+        abcToken: spelling.abcToken,
+        concert: concertName(midi, instrument, key),
+        degree: scale.degrees[index],
+        octave: octaveIndex + firstOctave,
+      };
+    }),
+  ).flat();
   const abc = makeAbc(currentNotes, writtenKey, scaleId, instrument.clef);
   if (window.ABCJS?.renderAbc) {
     ABCJS.renderAbc("scorePaper", abc, {
@@ -1014,7 +1086,6 @@ applyLanguage();
   document.querySelector("#instrumentSelect"),
   keySelect,
   document.querySelector("#scaleSelect"),
-  document.querySelector("#octaveSelect"),
 ].forEach((control) => control.addEventListener("change", render));
 
 document.querySelector("#concertToggle").addEventListener("change", () => {
