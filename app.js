@@ -300,16 +300,20 @@ function t(key) {
   return UI_TEXT[currentLanguage][key];
 }
 
+function setAttributeIfPresent(selector, name, value) {
+  document.querySelector(selector)?.setAttribute(name, value);
+}
+
 function applyLanguage() {
   const strings = UI_TEXT[currentLanguage];
   document.documentElement.lang = strings.lang;
   document.title = strings.appTitle;
   document.querySelector("#appTitle").textContent = strings.appTitle;
-  document.querySelector("#queryControls").setAttribute("aria-label", strings.controlsAria);
+  setAttributeIfPresent("#queryControls", "aria-label", strings.controlsAria);
   document.querySelector("#brassGroup").label = strings.brassGroup;
   document.querySelector("#modesGroup").label = strings.modesGroup;
-  document.querySelector("#jazzModesGroup").label =
-    strings.jazzModesGroup || "Jazz & synthetic scales";
+  const jazzModesGroup = document.querySelector("#jazzModesGroup");
+  if (jazzModesGroup) jazzModesGroup.label = strings.jazzModesGroup || "Jazz & synthetic scales";
   document.querySelector("#traditionalModesGroup").label =
     strings.traditionalModesGroup || "World traditions";
   document.querySelector("#arpeggiosGroup").label = strings.arpeggiosGroup;
@@ -325,19 +329,19 @@ function applyLanguage() {
   });
   const soundText = SOUND_MENU_TEXT[currentLanguage];
   document.querySelector("#soundSettingsToggle").textContent = soundText.label;
-  document.querySelector("#soundSettingsToggle").setAttribute("aria-label", soundText.aria);
-  document.querySelector("#soundSettingsPanel").setAttribute("aria-label", soundText.aria);
+  setAttributeIfPresent("#soundSettingsToggle", "aria-label", soundText.aria);
+  setAttributeIfPresent("#soundSettingsPanel", "aria-label", soundText.aria);
   document.querySelector("#soundLengthLabel").textContent = soundText.length;
   document.querySelector("#soundTimbreLabel").textContent = soundText.timbre;
   document.querySelectorAll("[data-sound-option]").forEach((option) => {
     option.textContent = soundText[option.dataset.soundOption];
   });
   const micText = MIC_MENU_TEXT[currentLanguage];
-  document.querySelector("#micToggle").setAttribute("aria-label", micText.aria);
-  document.querySelector("#instrumentSelect").setAttribute("aria-label", strings.instrumentAria);
-  document.querySelector("#keySelect").setAttribute("aria-label", strings.keyAria);
-  document.querySelector("#scaleSelect").setAttribute("aria-label", strings.scaleAria);
-  document.querySelector("#languageOptions").setAttribute("aria-label", strings.languageAria);
+  setAttributeIfPresent("#micToggle", "aria-label", micText.aria);
+  setAttributeIfPresent("#instrumentSelect", "aria-label", strings.instrumentAria);
+  setAttributeIfPresent("#keySelect", "aria-label", strings.keyAria);
+  setAttributeIfPresent("#scaleSelect", "aria-label", strings.scaleAria);
+  setAttributeIfPresent("#languageOptions", "aria-label", strings.languageAria);
   const activeLanguageButton = document.querySelector(`[data-language="${currentLanguage}"]`);
   document.querySelector("#languageToggle").textContent =
     activeLanguageButton?.textContent || currentLanguage;
@@ -346,8 +350,8 @@ function applyLanguage() {
     button.setAttribute("aria-pressed", String(active));
     button.classList.toggle("active", active);
   });
-  document.querySelector("#scorePaper").setAttribute("aria-label", strings.scoreAria);
-  document.querySelector("#scaleNoteList").setAttribute("aria-label", strings.scaleNotesAria);
+  setAttributeIfPresent("#scorePaper", "aria-label", strings.scoreAria);
+  setAttributeIfPresent("#scaleNoteList", "aria-label", strings.scaleNotesAria);
 }
 
 const keySelect = document.querySelector("#keySelect");
@@ -1004,15 +1008,20 @@ function bindScoreNoteControls() {
 }
 
 function render() {
-  const instrument = instruments[document.querySelector("#instrumentSelect").value];
+  const instrumentId = document.querySelector("#instrumentSelect").value;
+  const instrument = instruments[instrumentId];
   const key = keys[+keySelect.value],
     writtenKey = transposeKey(key, instrument.writtenOffset),
     scaleId = document.querySelector("#scaleSelect").value,
     scale = scales[scaleId];
   const showConcert = document.querySelector("#concertToggle").checked;
-  const firstOctave = 4;
-  const concertRootMidi = key.pc + (firstOctave + 1) * 12,
-    rootMidi = concertRootMidi + instrument.writtenOffset;
+  const noteRange = FINGERING_DATA.valves[instrumentId]?.range || [
+    Math.min(...Object.keys(FINGERING_DATA.trombonePositions).map(Number)),
+    Math.max(...Object.keys(FINGERING_DATA.trombonePositions).map(Number)),
+  ];
+  const writtenBase = key.pc + instrument.writtenOffset;
+  const firstOctave = Math.floor((noteRange[0] - writtenBase) / 12) - 1;
+  const lastOctave = Math.floor((noteRange[1] - writtenBase) / 12) - 1;
   const scaleTitle = UI_TEXT[currentLanguage].scales[scaleId];
   const keyScaleTitle =
     currentLanguage === "en" ? `${key.name} ${scaleTitle}` : `${key.name}${scaleTitle}`;
@@ -1021,20 +1030,26 @@ function render() {
   const clefName = instrument.clef === "bass" ? t("bassClef") : t("trebleClef");
   document.querySelector("#pitchHint").textContent =
     `${t("writtenKey")}: ${writtenKey.name} · ${clefName}${showConcert ? ` · ${t("concertShown")}` : ""} · ${fingeringHint}`;
-  currentNotes = Array.from({ length: 3 }, (_, octaveIndex) =>
-    (octaveIndex < 2 ? scale.steps.slice(0, -1) : scale.steps).map((step, index) => {
-      const midi = rootMidi + octaveIndex * 12 + step;
-      const spelling = noteForScale(writtenKey, rootMidi, midi, scaleId, index);
-      return {
-        midi,
-        name: spelling.name,
-        abcToken: spelling.abcToken,
-        concert: concertName(midi, instrument, key),
-        degree: scale.degrees[index],
-        octave: octaveIndex + firstOctave,
-      };
-    }),
-  ).flat();
+  currentNotes = Array.from({ length: lastOctave - firstOctave + 1 }, (_, octaveIndex) => {
+    const octave = firstOctave + octaveIndex;
+    const octaveRootMidi = key.pc + (octave + 1) * 12 + instrument.writtenOffset;
+    const steps = octaveIndex < lastOctave - firstOctave ? scale.steps.slice(0, -1) : scale.steps;
+    return steps
+      .map((step, index) => {
+        const midi = octaveRootMidi + step;
+        if (midi < noteRange[0] || midi > noteRange[1]) return null;
+        const spelling = noteForScale(writtenKey, octaveRootMidi, midi, scaleId, index);
+        return {
+          midi,
+          name: spelling.name,
+          abcToken: spelling.abcToken,
+          concert: concertName(midi, instrument, key),
+          degree: scale.degrees[index],
+          octave,
+        };
+      })
+      .filter(Boolean);
+  }).flat();
   const abc = makeAbc(currentNotes, writtenKey, scaleId, instrument.clef);
   if (window.ABCJS?.renderAbc) {
     ABCJS.renderAbc("scorePaper", abc, {
